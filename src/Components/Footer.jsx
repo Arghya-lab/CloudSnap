@@ -13,7 +13,7 @@ function Footer() {
       justifyContent="center"
       spacing={isMobileScreen?0:"0.5em"}>
       <Typography>
-        &copy; {new Date().getFullYear()} iWeather. Special thanks to{" "}
+        &copy; {new Date().getFullYear()} CloudSnap. Special thanks to{" "}
         <Link href="https://www.weatherapi.com/">weatherapi.com</Link>.
       </Typography>
       <Link href="https://github.com/Arghya-lab">
