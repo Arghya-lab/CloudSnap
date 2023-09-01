@@ -13,8 +13,7 @@ import {
   KeyboardArrowUpOutlined,
   KeyboardArrowDownOutlined,
 } from "@mui/icons-material";
-import { useSelector, } from 'react-redux'
-
+import { useSelector } from "react-redux";
 
 function CurrentTemperature() {
   const isMobileScreen = useMediaQuery("(max-width:390px)");
@@ -22,7 +21,7 @@ function CurrentTemperature() {
 
   const unitType = useSelector((state) => state.info.unitType);
   const {
-    condition: {text, icon},
+    condition: { text, icon },
     temp_c,
     temp_f,
     feelslike_c,
@@ -36,12 +35,12 @@ function CurrentTemperature() {
     uv,
     vis_km,
     vis_miles,
-  } = useSelector((state) => state.weather.currentWeather)
-  
+  } = useSelector((state) => state.weather.currentWeather);
+
   const {
-    day: {maxtemp_c, maxtemp_f, mintemp_c, mintemp_f },
-    astro: {sunrise, sunset}
-  } = useSelector((state) => state.weather.dailyForecast[0])
+    day: { maxtemp_c, maxtemp_f, mintemp_c, mintemp_f },
+    astro: { sunrise, sunset },
+  } = useSelector((state) => state.weather.dailyForecast[0]);
 
   return (
     <Stack
@@ -69,11 +68,19 @@ function CurrentTemperature() {
               alt={text}
               src={icon}
             />
-            <Typography variant="h2">{unitType==="metric"?temp_c:temp_f}°</Typography>
+            <Typography variant="h2">
+              {unitType === "metric" ? temp_c : temp_f}°
+            </Typography>
           </Stack>
-          <Stack direction="row" spacing="0.2rem" justifyContent="end" paddingX="1.5rem">
+          <Stack
+            direction="row"
+            spacing="0.2rem"
+            justifyContent="end"
+            paddingX="1.5rem">
             <DeviceThermostatOutlined />
-            <Typography variant="body1" >Feels Like : {unitType==="metric"?feelslike_c:feelslike_f}°</Typography>
+            <Typography variant="body1">
+              Feels Like : {unitType === "metric" ? feelslike_c : feelslike_f}°
+            </Typography>
           </Stack>
         </Stack>
         <Stack
@@ -89,7 +96,10 @@ function CurrentTemperature() {
           </Stack>
           <Stack direction="row" spacing="0.2rem">
             <AirOutlined />
-            <Typography variant="body1">Wind speed : {unitType==="metric"?wind_kph:wind_mph}{unitType==="metric"?"kph":"mph"}</Typography>
+            <Typography variant="body1">
+              Wind speed : {unitType === "metric" ? wind_kph : wind_mph}
+              {unitType === "metric" ? "kph" : "mph"}
+            </Typography>
           </Stack>
         </Stack>
 
@@ -98,7 +108,10 @@ function CurrentTemperature() {
           alignItems={isMobileScreen ? "center" : undefined}>
           <Stack direction="row" spacing="0.2rem">
             <WaterOutlined />
-            <Typography variant="body1">Precipitation : {unitType==="metric"?precip_mm:precip_in}{unitType==="metric"?"mm":"in"}</Typography>
+            <Typography variant="body1">
+              Precipitation : {unitType === "metric" ? precip_mm : precip_in}
+              {unitType === "metric" ? "mm" : "in"}
+            </Typography>
           </Stack>
           <Stack direction="row" spacing="0.2rem">
             <FlareOutlined />
@@ -106,7 +119,10 @@ function CurrentTemperature() {
           </Stack>
           <Stack direction="row" spacing="0.2rem">
             <VisibilityOutlined />
-            <Typography variant="body1">Visibility : {unitType==="metric"?vis_km:vis_miles}{unitType==="metric"?"km":"mile"}</Typography>
+            <Typography variant="body1">
+              Visibility : {unitType === "metric" ? vis_km : vis_miles}
+              {unitType === "metric" ? "km" : "mile"}
+            </Typography>
           </Stack>
         </Stack>
       </Stack>
@@ -142,11 +158,15 @@ function CurrentTemperature() {
           spacing={isMobileScreen ? "0.2rem" : "1rem"}>
           <Stack direction="row" spacing="0.2rem">
             <KeyboardArrowUpOutlined />
-            <Typography variant="body1">Max temp : {unitType==="metric"?maxtemp_c:maxtemp_f}°</Typography>
+            <Typography variant="body1">
+              Max temp : {unitType === "metric" ? maxtemp_c : maxtemp_f}°
+            </Typography>
           </Stack>
           <Stack direction="row" spacing="0.2rem">
             <KeyboardArrowDownOutlined />
-            <Typography variant="body1">Min temp : {unitType==="metric"?mintemp_c:mintemp_f}°</Typography>
+            <Typography variant="body1">
+              Min temp : {unitType === "metric" ? mintemp_c : mintemp_f}°
+            </Typography>
           </Stack>
         </Stack>
       </Stack>

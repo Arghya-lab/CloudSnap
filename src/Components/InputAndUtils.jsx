@@ -3,40 +3,27 @@ import {
   Stack,
   Autocomplete,
   TextField,
+  Button,
   IconButton,
-  ToggleButtonGroup,
-  ToggleButton,
 } from "@mui/material";
-import { SearchOutlined, PlaceOutlined } from "@mui/icons-material";
-import { getCityNameSuggestion, getWeatherData, getWeatherDataByGeoLocation } from "../utils/fetchData";
-import { useGeolocated } from "react-geolocated";
+import { SearchOutlined, LightMode, DarkMode } from "@mui/icons-material";
+import { getCityNameSuggestion, getWeatherData } from "../utils/fetchData";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  setMetric,
-  setImperial,
+  ChangeUnit,
   setSavedCity,
+  changeMode,
 } from "../features/weather/infoSlice";
-import {
-  setLocation,
-  setlocalTime,
-  setWeather,
-} from "../features/weather/weatherSlice";
+import { setWeatherAndlocalTime } from "../features/weather/weatherSlice";
+import { setAlert } from "../features/weather/alertSlice";
 
 function InputAndUtils() {
   const dispatch = useDispatch();
-  const savedUnitType = useSelector((state) => state.info.unitType);
+  const unitType = useSelector((state) => state.info.unitType);
+  const mode = useSelector((state) => state.info.mode);
 
-  const [unitType, setUnitType] = React.useState("metric");
   const [city, setCity] = useState("");
   const [citySuggestion, setCitySuggestion] = useState([]);
-
-  useEffect(() => {
-    if (savedUnitType === "metric") {
-      setUnitType("metric");
-    } else if (savedUnitType === "imperial") {
-      setUnitType("imperial");
-    }
-  }, [savedUnitType]);
 
   useEffect(() => {
     const fetchCityNameSuggestion = async () => {
@@ -48,44 +35,49 @@ function InputAndUtils() {
     fetchCityNameSuggestion();
   }, [city]);
 
-  const handleUnitChange = (event, value) => setUnitType(value);
   const handleChange = (e) => setCity(e.target.value);
+
+  const handleUnitChange = () => {
+    dispatch(ChangeUnit());
+    dispatch(
+      setAlert({
+        severity: "info",
+        message: `Unit type Changed.`,
+      })
+    );
+  };
+  const handleChangeMode = () => {
+    dispatch(changeMode());
+    dispatch(
+      setAlert({
+        severity: "info",
+        message: `Mode changed.`,
+      })
+    );
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
     setCity(citySuggestion.length > 0 ? citySuggestion[0].name : city);
-    const data = await getWeatherData(city);
+    const { data, error } = await getWeatherData(city);
     if (data) {
-      dispatch(setLocation(data));
-      dispatch(setWeather(data));
-      dispatch(setlocalTime(data));
+      dispatch(setWeatherAndlocalTime(data));
+      dispatch(
+        setAlert({
+          severity: "success",
+          message: `Weather of ${city} fetched.`,
+        })
+      );
       dispatch(setSavedCity(city));
     } else {
-      console.log("datanot");
+      dispatch(
+        setAlert({
+          severity: "error",
+          message: error.message,
+        })
+      );
+      console.log("data not present", error.message);
     }
   };
-
-  const { coords, isGeolocationAvailable, isGeolocationEnabled } =
-    useGeolocated({
-      positionOptions: {
-        enableHighAccuracy: false,
-      },
-      userDecisionTimeout: 5000,
-    });
-  
-  const handleGeoLocation = async() => {
-    const lat = coords.latitude
-    const lon = coords.longitude
-    const data = await getWeatherDataByGeoLocation(lat, lon);
-    console.log(coords);
-    if (data) {
-      dispatch(setLocation(data));
-      dispatch(setWeather(data));
-      dispatch(setlocalTime(data));
-      dispatch(setSavedCity(data.location.name));
-    } else {
-      console.log("datanot");
-    }
-  }
 
   return (
     <Stack direction="row" justifyContent="space-between" marginY="0.8rem">
@@ -116,41 +108,25 @@ function InputAndUtils() {
             />
           )}
         />
-        <Stack direction={"row"}>
-          <IconButton
-            aria-label="search"
-            color="primary"
-            onClick={handleSubmit}
-            type="submit">
-            <SearchOutlined />
-          </IconButton>
-          <IconButton
-            aria-label="location"
-            color="primary"
-            onClick={handleGeoLocation}>
-            <PlaceOutlined />
-          </IconButton>
-        </Stack>
+        <IconButton
+          aria-label="search"
+          color="primary"
+          onClick={handleSubmit}
+          type="submit">
+          <SearchOutlined />
+        </IconButton>
       </Stack>
-      <ToggleButtonGroup
-        color="primary"
-        value={unitType}
-        exclusive
-        onChange={handleUnitChange}
-        aria-label="unit type">
-        <ToggleButton
-          value="metric"
-          aria-label="metric system"
-          onClick={() => dispatch(setMetric())}>
-          C
-        </ToggleButton>
-        <ToggleButton
-          value="imperial"
-          aria-label="imperial system"
-          onClick={() => dispatch(setImperial())}>
-          F
-        </ToggleButton>
-      </ToggleButtonGroup>
+      <Stack direction={"row"}>
+        <IconButton
+          aria-label="mode switch"
+          color="primary"
+          onClick={handleChangeMode}>
+          {mode === "light" ? <DarkMode /> : <LightMode />}
+        </IconButton>
+        <Button onClick={handleUnitChange}>
+          {unitType === "metric" ? "F" : "M"}
+        </Button>
+      </Stack>
     </Stack>
   );
 }

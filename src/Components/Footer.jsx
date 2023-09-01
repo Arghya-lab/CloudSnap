@@ -8,10 +8,10 @@ function Footer() {
   return (
     <Stack
       my="1rem"
-      direction={isMobileScreen?"column":"row"}
+      direction={isMobileScreen ? "column" : "row"}
       alignItems="center"
       justifyContent="center"
-      spacing={isMobileScreen?0:"0.5em"}>
+      spacing={isMobileScreen ? 0 : "0.5em"}>
       <Typography>
         &copy; {new Date().getFullYear()} CloudSnap. Special thanks to{" "}
         <Link href="https://www.weatherapi.com/">weatherapi.com</Link>.

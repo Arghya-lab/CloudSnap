@@ -2,7 +2,7 @@ import React from "react";
 import { Stack, Typography, Box } from "@mui/material";
 import { DeviceThermostatOutlined } from "@mui/icons-material";
 import { useSelector } from "react-redux";
-import { dateAndTime } from "../utils/dateTimeFormatter"
+import { dateAndTime } from "../utils/dateTimeFormatter";
 
 function DateTimeLocAndTempMobdevicesonil() {
   const unitType = useSelector((state) => state.info.unitType);
@@ -18,7 +18,7 @@ function DateTimeLocAndTempMobdevicesonil() {
     (state) => state.weather.localTime
   );
 
-  const time = dateAndTime(epochTime, timeZone)
+  const time = dateAndTime(epochTime, timeZone);
 
   return (
     <Stack
@@ -53,11 +53,15 @@ function DateTimeLocAndTempMobdevicesonil() {
             alt={text}
             src={icon}
           />
-          <Typography variant="h2">{unitType==="metric"?temp_c:temp_f}°</Typography>
+          <Typography variant="h2">
+            {unitType === "metric" ? temp_c : temp_f}°
+          </Typography>
         </Stack>
-        <Stack direction="row" spacing="0.2rem" justifyContent="flex-end" >
+        <Stack direction="row" spacing="0.2rem" justifyContent="flex-end">
           <DeviceThermostatOutlined />
-          <Typography variant="body1">Feels Like : {unitType==="metric"?feelslike_c:feelslike_f}°</Typography>
+          <Typography variant="body1">
+            Feels Like : {unitType === "metric" ? feelslike_c : feelslike_f}°
+          </Typography>
         </Stack>
       </Stack>
     </Stack>

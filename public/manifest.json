@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "CloudSnap",
+  "name": "CloudSnap - Check the weather forecast",
   "icons": [
     {
       "src": "favicon.ico",

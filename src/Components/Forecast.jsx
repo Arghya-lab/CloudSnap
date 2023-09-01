@@ -3,14 +3,15 @@ import { Box, Divider, Stack, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import ForecastWidget from "./ForecastWidget";
 import { time, date } from "../utils/dateTimeFormatter";
-import { useMediaQuery } from "@mui/material"
+import { useMediaQuery } from "@mui/material";
 
 function Forecast() {
-
   const isTabletScreen = useMediaQuery("(max-width:768px)");
 
   const unitType = useSelector((state) => state.info.unitType);
-  const { epochTime, timeZone } = useSelector((state) => state.weather.localTime);
+  const { epochTime, timeZone } = useSelector(
+    (state) => state.weather.localTime
+  );
   const hourlyForecasts = useSelector((state) => state.weather.hourlyForecast);
   const dailyForecasts = useSelector((state) => state.weather.dailyForecast);
 
@@ -25,15 +26,22 @@ function Forecast() {
           <Stack direction="row" spacing="2rem" justifyContent="space-around">
             {hourlyForecasts
               .filter((hourlyForecast) => hourlyForecast.time_epoch > epochTime)
-              .map((hourlyForecast, index) => index <(isTabletScreen?5:12) && (
-                  <ForecastWidget
-                    key={index}
-                    timeOrDate={time(hourlyForecast.time_epoch, timeZone)}
-                    conditionText={hourlyForecast.condition.text}
-                    conditionIcon={hourlyForecast.condition.icon}
-                    tempereture={unitType==="metric"?hourlyForecast.temp_c:hourlyForecast.temp_f}
-                  />
-              ))}
+              .map(
+                (hourlyForecast, index) =>
+                  index < (isTabletScreen ? 5 : 10) && (
+                    <ForecastWidget
+                      key={index}
+                      timeOrDate={time(hourlyForecast.time_epoch, timeZone)}
+                      conditionText={hourlyForecast.condition.text}
+                      conditionIcon={hourlyForecast.condition.icon}
+                      tempereture={
+                        unitType === "metric"
+                          ? hourlyForecast.temp_c
+                          : hourlyForecast.temp_f
+                      }
+                    />
+                  )
+              )}
           </Stack>
         </Stack>
       </Box>
@@ -44,16 +52,22 @@ function Forecast() {
           <Divider />
         </Box>
         <Stack direction="row" spacing="2rem" justifyContent="space-around">
-        {dailyForecasts
-              .map((dailyForecast, index) => index<(isTabletScreen?5:12) && (
-                  <ForecastWidget
-                    key={index}
-                    timeOrDate={date(dailyForecast.date_epoch, timeZone)}
-                    conditionText={dailyForecast.day.condition.text}
-                    conditionIcon={dailyForecast.day.condition.icon}
-                    tempereture={unitType==="metric"?dailyForecast.day.avgtemp_c:dailyForecast.day.avgtemp_f}
-                  />
-              ))}
+          {dailyForecasts.map(
+            (dailyForecast, index) =>
+              index < (isTabletScreen ? 5 : 12) && (
+                <ForecastWidget
+                  key={index}
+                  timeOrDate={date(dailyForecast.date_epoch, timeZone)}
+                  conditionText={dailyForecast.day.condition.text}
+                  conditionIcon={dailyForecast.day.condition.icon}
+                  tempereture={
+                    unitType === "metric"
+                      ? dailyForecast.day.avgtemp_c
+                      : dailyForecast.day.avgtemp_f
+                  }
+                />
+              )
+          )}
         </Stack>
       </Box>
     </Stack>

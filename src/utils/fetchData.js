@@ -33,9 +33,10 @@ export const getWeatherData = async (city) => {
         days: 3,
       },
     });
-    return res.data;
+    return {data: res.data};
   } catch (error) {
     console.log(error);
+    return {error: error};
   }
 };
 
@@ -48,8 +49,9 @@ export const getWeatherDataByGeoLocation = async (lat, lon) => {
         days: 5,
       },
     });
-    return res.data;
+    return {data: res.data};
   } catch (error) {
     console.log(error);
+    return {error: error};
   }
 }

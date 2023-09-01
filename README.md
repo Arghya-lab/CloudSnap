@@ -13,16 +13,17 @@ You can check out a live demo of the app [here](#your-demo-url).
 
 ## Features
 - Get current weather conditions for a specified location.
-- View a 3 day weather forecast.
+- View a 3-day  weather forecast.
 - Responsive design for mobile and desktop.
 - Search for weather data by city name.
-- AutoComplete search.
+- AutoComplete in the search section.
 
 ## Roadmap
-- [ ]  Remove bugs.
-- [ ]  Add theme.
-- [ ]  Add date wise detail forecast.
-- [ ]  Add Bookmark city as favorites for quick addition to your city on the top.
+- [ ]  Remove bug .
+- [ ]  Add alert system.
+- [ ]  Add a light, dark theme.
+- [ ]  Add Bookmark City as a favorite for quick access to the city at the top.
+- [ ]  Add date-wise detailed forecast.
 
 ## Tech Stack
 
@@ -33,7 +34,7 @@ You can check out a live demo of the app [here](#your-demo-url).
 
 ## Contributing
 
-Contributions are welcome! \
+Contributions are welcome! \ 
 If you'd like to contribute to the project, please follow these steps:
 
 #### Fork the repository

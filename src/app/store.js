@@ -3,6 +3,7 @@ import { combineReducers } from "redux";
 import storage from "redux-persist/lib/storage";
 import weatherSlice from "../features/weather/weatherSlice";
 import infoSlice from "../features/weather/infoSlice";
+import alertSlice from "../features/weather/alertSlice";
 import {
   persistReducer,
   FLUSH,
@@ -17,7 +18,7 @@ const persistConfig = {
   key: "weather_data",
   storage,
 };
-const reducers = combineReducers({ weather: weatherSlice, info: infoSlice });
+const reducers = combineReducers({ weather: weatherSlice, info: infoSlice, alert: alertSlice });
 const persistedReducer = persistReducer(persistConfig, reducers);
 
 export default configureStore({
