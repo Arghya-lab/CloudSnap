@@ -19,9 +19,9 @@ You can check out a live demo of the app [here](#your-demo-url).
 - AutoComplete in the search section.
 
 ## Roadmap
-- [ ]  Remove bug .
-- [ ]  Add alert system.
-- [ ]  Add a light, dark theme.
+- [x]  Add alert system.
+- [x]  Add a light, dark theme.
+- [ ]  Remove bug, UI improvemrnt.
 - [ ]  Add Bookmark City as a favorite for quick access to the city at the top.
 - [ ]  Add date-wise detailed forecast.
 
