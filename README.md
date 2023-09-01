@@ -34,8 +34,7 @@ You can check out a live demo of the app [here](#your-demo-url).
 
 ## Contributing
 
-Contributions are welcome! \ 
-If you'd like to contribute to the project, please follow these steps:
+Contributions are welcome! \ If you'd like to contribute to the project, please follow these steps:
 
 #### Fork the repository
 - Create a new branch for your feature or bug fix.
