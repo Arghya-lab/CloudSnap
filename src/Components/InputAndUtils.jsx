@@ -10,7 +10,7 @@ import { SearchOutlined, LightMode, DarkMode } from "@mui/icons-material";
 import { getCityNameSuggestion, getWeatherData } from "../utils/fetchData";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  ChangeUnit,
+  changeUnit,
   setSavedCity,
   changeMode,
 } from "../features/weather/infoSlice";
@@ -24,21 +24,27 @@ function InputAndUtils() {
 
   const [city, setCity] = useState("");
   const [citySuggestion, setCitySuggestion] = useState([]);
+  const [selectedCity, setSelectedCity] = useState(null);
+  
+  const handleChange = (e) => {
+    const newCityValue = e.target.value;
+    setCity(newCityValue);
+    console.log(newCityValue);
+  };
 
   useEffect(() => {
     const fetchCityNameSuggestion = async () => {
       if (city.length >= 3) {
         const cityNameSuggestion = await getCityNameSuggestion(city);
         setCitySuggestion(cityNameSuggestion);
+        console.log(cityNameSuggestion);
       }
     };
     fetchCityNameSuggestion();
   }, [city]);
 
-  const handleChange = (e) => setCity(e.target.value);
-
   const handleUnitChange = () => {
-    dispatch(ChangeUnit());
+    dispatch(changeUnit())
     dispatch(
       setAlert({
         severity: "info",
@@ -56,26 +62,33 @@ function InputAndUtils() {
     );
   };
   const handleSubmit = async (event) => {
+    //  search related bug is here
     event.preventDefault();
-    setCity(citySuggestion.length > 0 ? citySuggestion[0].name : city);
-    const { data, error } = await getWeatherData(city);
-    if (data) {
-      dispatch(setWeatherAndlocalTime(data));
-      dispatch(
-        setAlert({
-          severity: "success",
-          message: `Weather of ${city} fetched.`,
-        })
-      );
-      dispatch(setSavedCity(city));
-    } else {
-      dispatch(
-        setAlert({
-          severity: "error",
-          message: error.message,
-        })
-      );
-      console.log("data not present", error.message);
+    // const searchCity = citySuggestion.length > 0 ? citySuggestion[0].name : city;
+    // await setCity(searchCity);
+    // console.log("onsubmit city", searchCity);
+    // const { data, error } = await getWeatherData(searchCity);
+    if (selectedCity) {
+      const { data, error } = await getWeatherData(selectedCity.name);
+
+      if (data) {
+        dispatch(setWeatherAndlocalTime(data));
+        dispatch(
+          setAlert({
+            severity: "success",
+            message: `Weather of ${selectedCity.name} fetched.`,
+          })
+        );
+        dispatch(setSavedCity(selectedCity.name));
+      } else {
+        dispatch(
+          setAlert({
+            severity: "error",
+            message: error.message,
+          })
+        );
+        console.log("data not present", error.message);
+      }
     }
   };
 
@@ -93,17 +106,22 @@ function InputAndUtils() {
           id="city"
           size="small"
           disableClearable
-          onClick={handleSubmit}
-          options={citySuggestion.map(
-            (option) => `${option.name}, ${option.region}, ${option.country}`
-          )}
-          renderInput={(params) => (
-            <TextField
+          options={citySuggestion}
+          getOptionLabel={(option) => `${option.name}, ${option.region}, ${option.country}`}
+          value={selectedCity}
+          onChange={(event, newValue) => {
+            setSelectedCity(newValue);
+          }}
+          // options={citySuggestion.map(
+          //   (option) => `${option.name}, ${option.region}, ${option.country}`
+          //   )}
+            renderInput={(params) => (
+              <TextField
               {...params}
-              label="City"
+              label="city"
               placeholder="Search for city..."
               variant="outlined"
-              type="search"
+              value={city}
               onChange={handleChange}
             />
           )}

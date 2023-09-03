@@ -10,7 +10,7 @@ export const infoSlice = createSlice({
   name: "info",
   initialState,
   reducers: {
-    ChangeUnit: (state) => {
+    changeUnit: (state) => {
       state.unitType = state.unitType==="metric"?"imperial":"metric";
     },
     setSavedCity: (state, action) => {
@@ -22,5 +22,5 @@ export const infoSlice = createSlice({
   },
 });
 
-export const { ChangeUnit, setSavedCity, changeMode } = infoSlice.actions;
+export const { changeUnit, setSavedCity, changeMode } = infoSlice.actions;
 export default infoSlice.reducer;

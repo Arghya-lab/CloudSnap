@@ -34,7 +34,8 @@ function App() {
   const savedCity = useSelector((state) => state.info.savedCity);
   const mode = useSelector((state) => state.info.mode);
     
-  const theme = useMemo(() =>createTheme(themeSetting(mode)),[mode],);
+  const theme = useMemo(() =>createTheme(themeSetting(mode)),[mode]);
+  
   useEffect(() => {
     const fetchWeatherData = async () => {
       const { data, error } = await getWeatherData(savedCity);
