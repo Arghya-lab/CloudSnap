@@ -25,22 +25,21 @@ import {
 import { setAlert } from "./features/weather/alertSlice";
 
 function App() {
-  // const { temp_c } = useSelector((state) => state.weather.currentWeather)
-
   const isTabletScreen = useMediaQuery("(max-width:768px)");
-  
+
   const dispatch = useDispatch();
-  const isWeatherPresent = useSelector((state) => state.weather.isWeatherPresent);
+  const isWeatherPresent = useSelector(
+    (state) => state.weather.isWeatherPresent
+  );
   const savedCity = useSelector((state) => state.info.savedCity);
   const mode = useSelector((state) => state.info.mode);
-    
-  const theme = useMemo(() =>createTheme(themeSetting(mode)),[mode]);
-  
+
+  const theme = useMemo(() => createTheme(themeSetting(mode)), [mode]);
+
   useEffect(() => {
     const fetchWeatherData = async () => {
       const { data, error } = await getWeatherData(savedCity);
       if (data) {
-        //location is undefine error is comming from here
         dispatch(setWeatherAndlocalTime(data));
         dispatch(setIsWeatherPresent(true));
 
@@ -85,7 +84,7 @@ function App() {
               <Forecast />
             </>
           )}
-          <Footer color="#000" />
+          <Footer />
         </Stack>
         <EventAlert />
       </ThemeProvider>

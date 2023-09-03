@@ -25,11 +25,10 @@ function InputAndUtils() {
   const [city, setCity] = useState("");
   const [citySuggestion, setCitySuggestion] = useState([]);
   const [selectedCity, setSelectedCity] = useState(null);
-  
+
   const handleChange = (e) => {
     const newCityValue = e.target.value;
     setCity(newCityValue);
-    console.log(newCityValue);
   };
 
   useEffect(() => {
@@ -37,14 +36,14 @@ function InputAndUtils() {
       if (city.length >= 3) {
         const cityNameSuggestion = await getCityNameSuggestion(city);
         setCitySuggestion(cityNameSuggestion);
-        console.log(cityNameSuggestion);
       }
     };
     fetchCityNameSuggestion();
   }, [city]);
 
   const handleUnitChange = () => {
-    dispatch(changeUnit())
+    //  state is immedietly not changing fix that we can show what happen in alert
+    dispatch(changeUnit());
     dispatch(
       setAlert({
         severity: "info",
@@ -53,6 +52,7 @@ function InputAndUtils() {
     );
   };
   const handleChangeMode = () => {
+    //  state is immedietly not changing fix that we can show what happen in alert
     dispatch(changeMode());
     dispatch(
       setAlert({
@@ -62,15 +62,9 @@ function InputAndUtils() {
     );
   };
   const handleSubmit = async (event) => {
-    //  search related bug is here
     event.preventDefault();
-    // const searchCity = citySuggestion.length > 0 ? citySuggestion[0].name : city;
-    // await setCity(searchCity);
-    // console.log("onsubmit city", searchCity);
-    // const { data, error } = await getWeatherData(searchCity);
     if (selectedCity) {
       const { data, error } = await getWeatherData(selectedCity.name);
-
       if (data) {
         dispatch(setWeatherAndlocalTime(data));
         dispatch(
@@ -87,7 +81,6 @@ function InputAndUtils() {
             message: error.message,
           })
         );
-        console.log("data not present", error.message);
       }
     }
   };
@@ -107,16 +100,15 @@ function InputAndUtils() {
           size="small"
           disableClearable
           options={citySuggestion}
-          getOptionLabel={(option) => `${option.name}, ${option.region}, ${option.country}`}
+          getOptionLabel={(option) =>
+            `${option.name}, ${option.region}, ${option.country}`
+          }
           value={selectedCity}
           onChange={(event, newValue) => {
             setSelectedCity(newValue);
           }}
-          // options={citySuggestion.map(
-          //   (option) => `${option.name}, ${option.region}, ${option.country}`
-          //   )}
-            renderInput={(params) => (
-              <TextField
+          renderInput={(params) => (
+            <TextField
               {...params}
               label="city"
               placeholder="Search for city..."

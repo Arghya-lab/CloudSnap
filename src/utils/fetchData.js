@@ -10,7 +10,7 @@ const URL = axios.create({
   timeout: 5000,
 });
 
-export const getCityNameSuggestion = async(q)  => {
+export const getCityNameSuggestion = async (q) => {
   try {
     const res = await URL.get("/search.json", {
       params: {
@@ -22,7 +22,7 @@ export const getCityNameSuggestion = async(q)  => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 export const getWeatherData = async (city) => {
   try {
@@ -33,10 +33,9 @@ export const getWeatherData = async (city) => {
         days: 3,
       },
     });
-    return {data: res.data};
+    return { data: res.data };
   } catch (error) {
-    console.log(error);
-    return {error: error};
+    return { error: error };
   }
 };
 
@@ -45,13 +44,13 @@ export const getWeatherDataByGeoLocation = async (lat, lon) => {
     const res = await URL.get("/forecast.json", {
       params: {
         key: apiKey,
-        q: lat,lon,
+        q: lat,
+        lon,
         days: 5,
       },
     });
-    return {data: res.data};
+    return { data: res.data };
   } catch (error) {
-    console.log(error);
-    return {error: error};
+    return { error: error };
   }
-}
+};

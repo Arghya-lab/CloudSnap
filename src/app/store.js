@@ -18,7 +18,11 @@ const persistConfig = {
   key: "weather_data",
   storage,
 };
-const reducers = combineReducers({ weather: weatherSlice, info: infoSlice, alert: alertSlice });
+const reducers = combineReducers({
+  weather: weatherSlice,
+  info: infoSlice,
+  alert: alertSlice,
+});
 const persistedReducer = persistReducer(persistConfig, reducers);
 
 export default configureStore({

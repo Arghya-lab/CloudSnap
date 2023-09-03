@@ -11,13 +11,13 @@ export const infoSlice = createSlice({
   initialState,
   reducers: {
     changeUnit: (state) => {
-      state.unitType = state.unitType==="metric"?"imperial":"metric";
+      state.unitType = state.unitType === "metric" ? "imperial" : "metric";
     },
     setSavedCity: (state, action) => {
       state.savedCity = action.payload;
     },
-    changeMode:(state) => {
-      state.mode = state.mode==="light"?"dark":"light";
+    changeMode: (state) => {
+      state.mode = state.mode === "light" ? "dark" : "light";
     },
   },
 });
