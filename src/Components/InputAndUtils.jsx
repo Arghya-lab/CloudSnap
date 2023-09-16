@@ -42,46 +42,51 @@ function InputAndUtils() {
   }, [city]);
 
   const handleUnitChange = () => {
-    //  state is immediately not changing fix that we can show what happen in alert
     dispatch(changeUnit());
-    dispatch(
-      setAlert({
-        severity: "info",
-        message: `Unit type Changed.`,
-      })
-    );
   };
+
   const handleChangeMode = () => {
-    //  state is immediately not changing fix that we can show what happen in alert
     dispatch(changeMode());
+  };
+
+  useEffect(() => {
     dispatch(
       setAlert({
         severity: "info",
-        message: `Mode changed.`,
+        message: `Mode changed to ${mode}.`,
       })
     );
-  };
+  }, [mode]);
+
+  useEffect(() => {
+    dispatch(
+      setAlert({
+        severity: "info",
+        message: `Unit type Changed to ${unitType}.`,
+      })
+    );
+  }, [unitType]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (selectedCity) {
-      const { data, error } = await getWeatherData(selectedCity.name);
-      if (data) {
-        dispatch(setWeatherAndLocalTime(data));
-        dispatch(
-          setAlert({
-            severity: "success",
-            message: `Weather of ${selectedCity.name} fetched.`,
-          })
-        );
-        dispatch(setSavedCity(selectedCity.name));
-      } else {
-        dispatch(
-          setAlert({
-            severity: "error",
-            message: error.message,
-          })
-        );
-      }
+    const cityToFetch = selectedCity ? selectedCity.name : city;
+    const { data, error } = await getWeatherData(cityToFetch);
+    if (data) {
+      dispatch(setWeatherAndLocalTime(data));
+      dispatch(
+        setAlert({
+          severity: "success",
+          message: `Weather of ${cityToFetch} fetched.`,
+        })
+      );
+      dispatch(setSavedCity(cityToFetch));
+    } else {
+      dispatch(
+        setAlert({
+          severity: "error",
+          message: error.message,
+        })
+      );
     }
   };
 

@@ -16,7 +16,7 @@ export const weatherSlice = createSlice({
     setIsWeatherPresent: (state, action) => {
       state.isWeatherPresent = action.payload;
     },
-    setWeatherAndlocalTime: (state, action) => {
+    setWeatherAndLocalTime: (state, action) => {
       // Location
       state.location.name = action.payload.location.name;
       state.location.country = action.payload.location.country;
@@ -31,5 +31,5 @@ export const weatherSlice = createSlice({
   },
 });
 
-export const { setIsWeatherPresent, setWeatherAndlocalTime } = weatherSlice.actions;
+export const { setIsWeatherPresent, setWeatherAndLocalTime } = weatherSlice.actions;
 export default weatherSlice.reducer;
