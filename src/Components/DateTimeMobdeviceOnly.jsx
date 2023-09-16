@@ -4,7 +4,7 @@ import { DeviceThermostatOutlined } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { dateAndTime } from "../utils/dateTimeFormatter";
 
-function DateTimeLocAndTempMobdevicesonil() {
+function DateTimeLocAndTempMobDevicesOnly() {
   const unitType = useSelector((state) => state.info.unitType);
   const {
     condition: { text, icon },
@@ -68,4 +68,4 @@ function DateTimeLocAndTempMobdevicesonil() {
   );
 }
 
-export default DateTimeLocAndTempMobdevicesonil;
+export default DateTimeLocAndTempMobDevicesOnly;

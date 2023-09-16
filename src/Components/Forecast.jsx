@@ -34,7 +34,7 @@ function Forecast() {
                       timeOrDate={time(hourlyForecast.time_epoch, timeZone)}
                       conditionText={hourlyForecast.condition.text}
                       conditionIcon={hourlyForecast.condition.icon}
-                      tempereture={
+                      temperature={
                         unitType === "metric"
                           ? hourlyForecast.temp_c
                           : hourlyForecast.temp_f
@@ -60,7 +60,7 @@ function Forecast() {
                   timeOrDate={date(dailyForecast.date_epoch, timeZone)}
                   conditionText={dailyForecast.day.condition.text}
                   conditionIcon={dailyForecast.day.condition.icon}
-                  tempereture={
+                  temperature={
                     unitType === "metric"
                       ? dailyForecast.day.avgtemp_c
                       : dailyForecast.day.avgtemp_f

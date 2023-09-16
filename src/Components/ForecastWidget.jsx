@@ -5,7 +5,7 @@ function ForecastWidget({
   timeOrDate,
   conditionText,
   conditionIcon,
-  tempereture,
+  temperature,
 }) {
   return (
     <Stack alignItems="center">
@@ -19,7 +19,7 @@ function ForecastWidget({
         alt={conditionText}
         src={conditionIcon}
       />
-      <Typography variant="body2">{tempereture}°</Typography>
+      <Typography variant="body2">{temperature}°</Typography>
     </Stack>
   );
 }

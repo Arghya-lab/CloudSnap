@@ -8,18 +8,18 @@ import {
 } from "@mui/material";
 import { themeSetting } from "./theme";
 import "./App.css";
-import HeaderBottons from "./Components/HeaderBottons";
+import HeaderButtons from "./Components/HeaderButtons";
 import InputAndUtils from "./Components/InputAndUtils";
 import DateTimeAndLocation from "./Components/DateTimeAndLocation";
 import CurrentTemperature from "./Components/CurrentTemperature";
 import Forecast from "./Components/Forecast";
-import DateTimeLocAndTempMobdevicesonly from "./Components/DateTimeMobdeviceOnly";
+import DateTimeLocAndTempMobDevicesOnly from "./Components/DateTimeLocAndTempMobDevicesOnly";
 import Footer from "./Components/Footer";
 import EventAlert from "./Components/EventAlert";
 import { getWeatherData } from "./utils/fetchData";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  setWeatherAndlocalTime,
+  setWeatherAndLocalTime,
   setIsWeatherPresent,
 } from "./features/weather/weatherSlice";
 import { setAlert } from "./features/weather/alertSlice";
@@ -40,7 +40,7 @@ function App() {
     const fetchWeatherData = async () => {
       const { data, error } = await getWeatherData(savedCity);
       if (data) {
-        dispatch(setWeatherAndlocalTime(data));
+        dispatch(setWeatherAndLocalTime(data));
         dispatch(setIsWeatherPresent(true));
 
         dispatch(
@@ -71,12 +71,12 @@ function App() {
             width: { xs: "94vw", lg: "1024px" },
           }}>
           <CssBaseline />
-          <HeaderBottons />
+          <HeaderButtons />
           <InputAndUtils />
           {isWeatherPresent && (
             <>
               {isTabletScreen ? (
-                <DateTimeLocAndTempMobdevicesonly />
+                <DateTimeLocAndTempMobDevicesOnly />
               ) : (
                 <DateTimeAndLocation />
               )}

@@ -14,7 +14,7 @@ import {
   setSavedCity,
   changeMode,
 } from "../features/weather/infoSlice";
-import { setWeatherAndlocalTime } from "../features/weather/weatherSlice";
+import { setWeatherAndLocalTime } from "../features/weather/weatherSlice";
 import { setAlert } from "../features/weather/alertSlice";
 
 function InputAndUtils() {
@@ -42,7 +42,7 @@ function InputAndUtils() {
   }, [city]);
 
   const handleUnitChange = () => {
-    //  state is immedietly not changing fix that we can show what happen in alert
+    //  state is immediately not changing fix that we can show what happen in alert
     dispatch(changeUnit());
     dispatch(
       setAlert({
@@ -52,7 +52,7 @@ function InputAndUtils() {
     );
   };
   const handleChangeMode = () => {
-    //  state is immedietly not changing fix that we can show what happen in alert
+    //  state is immediately not changing fix that we can show what happen in alert
     dispatch(changeMode());
     dispatch(
       setAlert({
@@ -66,7 +66,7 @@ function InputAndUtils() {
     if (selectedCity) {
       const { data, error } = await getWeatherData(selectedCity.name);
       if (data) {
-        dispatch(setWeatherAndlocalTime(data));
+        dispatch(setWeatherAndLocalTime(data));
         dispatch(
           setAlert({
             severity: "success",

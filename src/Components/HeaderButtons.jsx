@@ -1,7 +1,7 @@
 import React from "react";
 import { ButtonGroup, Button, Box, useMediaQuery } from "@mui/material";
 
-function HeaderBottons() {
+function HeaderButtons() {
   const cities = [
     {
       id: 1,
@@ -40,4 +40,4 @@ function HeaderBottons() {
   );
 }
 
-export default HeaderBottons;
+export default HeaderButtons;
