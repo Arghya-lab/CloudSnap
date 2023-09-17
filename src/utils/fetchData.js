@@ -24,21 +24,6 @@ export const getCityNameSuggestion = async (q) => {
   }
 };
 
-export const getWeatherData = async (city) => {
-  try {
-    const res = await URL.get("/forecast.json", {
-      params: {
-        key: apiKey,
-        q: city,
-        days: 3,
-      },
-    });
-    return { data: res.data };
-  } catch (error) {
-    return { error: error };
-  }
-};
-
 export const getWeatherDataByGeoLocation = async (lat, lon) => {
   try {
     const res = await URL.get("/forecast.json", {

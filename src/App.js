@@ -16,52 +16,24 @@ import Forecast from "./Components/Forecast";
 import DateTimeLocAndTempMobDevicesOnly from "./Components/DateTimeLocAndTempMobDevicesOnly";
 import Footer from "./Components/Footer";
 import EventAlert from "./Components/EventAlert";
-import { getWeatherData } from "./utils/fetchData";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  setWeatherAndLocalTime,
-  setIsWeatherPresent,
-} from "./features/weather/weatherSlice";
-import { setAlert } from "./features/weather/alertSlice";
+import { useSelector } from "react-redux";
+import { useFetchCityWeather } from "./hooks/useFetchCityWeather";
 
 function App() {
   const isTabletScreen = useMediaQuery("(max-width:768px)");
 
-  const dispatch = useDispatch();
   const isWeatherPresent = useSelector(
     (state) => state.weather.isWeatherPresent
   );
   const savedCity = useSelector((state) => state.info.savedCity);
   const mode = useSelector((state) => state.info.mode);
-
+  
+  const fetchWeather = useFetchCityWeather();
   const theme = useMemo(() => createTheme(themeSetting(mode)), [mode]);
 
   useEffect(() => {
-    const fetchWeatherData = async () => {
-      const { data, error } = await getWeatherData(savedCity);
-      if (data) {
-        dispatch(setWeatherAndLocalTime(data));
-        dispatch(setIsWeatherPresent(true));
-
-        dispatch(
-          setAlert({
-            severity: "success",
-            message: `Weather of ${savedCity} fetched.`,
-          })
-        );
-      } else {
-        console.log("data is not present");
-        dispatch(
-          setAlert({
-            severity: "error",
-            message: error.message,
-          })
-        );
-      }
-    };
-
-    fetchWeatherData();
-  }, [dispatch, savedCity]);
+    fetchWeather(savedCity)
+  }, []);
 
   return (
     <div className="app">

@@ -21,7 +21,7 @@ function EventAlert() {
       open={isOpen}
       autoHideDuration={3000}
       onClose={handleClose}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}>
+      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
       <Alert
         icon={false}
         onClose={handleClose}

@@ -7,15 +7,14 @@ import {
   IconButton,
 } from "@mui/material";
 import { SearchOutlined, LightMode, DarkMode } from "@mui/icons-material";
-import { getCityNameSuggestion, getWeatherData } from "../utils/fetchData";
+import { getCityNameSuggestion } from "../utils/fetchData";
 import { useSelector, useDispatch } from "react-redux";
 import {
   changeUnit,
-  setSavedCity,
   changeMode,
 } from "../features/weather/infoSlice";
-import { setWeatherAndLocalTime } from "../features/weather/weatherSlice";
 import { setAlert } from "../features/weather/alertSlice";
+import { useFetchCityWeather } from "../hooks/useFetchCityWeather";
 
 function InputAndUtils() {
   const dispatch = useDispatch();
@@ -25,11 +24,12 @@ function InputAndUtils() {
   const [city, setCity] = useState("");
   const [citySuggestion, setCitySuggestion] = useState([]);
   const [selectedCity, setSelectedCity] = useState(null);
+  const fetchWeather = useFetchCityWeather();
 
   const handleChange = (e) => {
     const newCityValue = e.target.value;
     setCity(newCityValue);
-  };
+  };  
 
   useEffect(() => {
     const fetchCityNameSuggestion = async () => {
@@ -56,6 +56,7 @@ function InputAndUtils() {
         message: `Mode changed to ${mode}.`,
       })
     );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode]);
 
   useEffect(() => {
@@ -65,29 +66,14 @@ function InputAndUtils() {
         message: `Unit type Changed to ${unitType}.`,
       })
     );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unitType]);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    const cityToFetch = selectedCity ? selectedCity.name : city;
-    const { data, error } = await getWeatherData(cityToFetch);
-    if (data) {
-      dispatch(setWeatherAndLocalTime(data));
-      dispatch(
-        setAlert({
-          severity: "success",
-          message: `Weather of ${cityToFetch} fetched.`,
-        })
-      );
-      dispatch(setSavedCity(cityToFetch));
-    } else {
-      dispatch(
-        setAlert({
-          severity: "error",
-          message: error.message,
-        })
-      );
-    }
+    const cityToFetch = selectedCity.name?selectedCity.name:city
+    fetchWeather(cityToFetch);
+      setSelectedCity("");
   };
 
   return (
@@ -106,7 +92,7 @@ function InputAndUtils() {
           disableClearable
           options={citySuggestion}
           getOptionLabel={(option) =>
-            `${option.name}, ${option.region}, ${option.country}`
+            option?`${option.name}, ${option.region}, ${option.country}`:""
           }
           value={selectedCity}
           onChange={(event, newValue) => {
@@ -145,5 +131,4 @@ function InputAndUtils() {
     </Stack>
   );
 }
-
 export default InputAndUtils;

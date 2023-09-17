@@ -1,4 +1,5 @@
 import React from "react";
+import { useFetchCityWeather } from "../hooks/useFetchCityWeather";
 import { ButtonGroup, Button, Box, useMediaQuery } from "@mui/material";
 
 function HeaderButtons() {
@@ -17,12 +18,14 @@ function HeaderButtons() {
     },
     {
       id: 4,
-      title: "Delhi",
+      title: "Chennai",
     },
   ];
 
   const isMobileScreen = useMediaQuery("(max-width:425px)");
 
+  const fetchWeather = useFetchCityWeather();
+  
   return (
     <Box marginY="0.8rem">
       <ButtonGroup variant="text">
@@ -31,7 +34,9 @@ function HeaderButtons() {
             color="info"
             size={isMobileScreen ? "small" : "medium"}
             sx={{ paddingX: isMobileScreen ? "0.8rem" : "1.5rem" }}
-            key={city.id}>
+            key={city.id}
+            onClick={()=>fetchWeather(city.title)}
+            >
             {city.title}
           </Button>
         ))}
