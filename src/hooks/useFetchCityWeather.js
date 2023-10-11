@@ -27,7 +27,6 @@ const useFetchCityWeather = () => {
           days: 3,
         },
       });
-      console.log(res.data);
       const data = res.data;
       const fetchedCity = data.location.name;
       dispatch(setWeatherAndLocalTime(data));

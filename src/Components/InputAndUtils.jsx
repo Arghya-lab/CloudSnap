@@ -32,13 +32,13 @@ function InputAndUtils() {
   };  
 
   useEffect(() => {
-    const fetchCityNameSuggestion = async () => {
+    //  fetching city name suggestion
+    (async () => {
       if (city.length >= 3) {
         const cityNameSuggestion = await getCityNameSuggestion(city);
         setCitySuggestion(cityNameSuggestion);
       }
-    };
-    fetchCityNameSuggestion();
+    })();
   }, [city]);
 
   const handleUnitChange = () => {
