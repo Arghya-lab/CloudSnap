@@ -1,24 +1,24 @@
 import axios from "axios";
-import env from "react-dotenv";
 import { useDispatch } from "react-redux";
 import { setWeatherAndLocalTime } from "../features/weather/weatherSlice";
 import { setAlert } from "../features/weather/alertSlice";
 import { setSavedCity } from "../features/weather/infoSlice";
 import { setIsWeatherPresent } from "../features/weather/weatherSlice";
+import conf from "../conf/conf";
 
 const useFetchCityWeather = () => {
   const dispatch = useDispatch();
-  
+
   const fetchWeather = async (city) => {
-    const baseURL = env.BASE_URL;
-    const apiKey = env.API_KEY;
-  
+    const baseURL = conf.baseURL;
+    const apiKey = conf.apiKey;
+
     // we need to pass the baseURL as an object
-  const URL = axios.create({
-    baseURL,
-    timeout: 5000,
-  });
-  
+    const URL = axios.create({
+      baseURL,
+      timeout: 5000,
+    });
+
     try {
       const res = await URL.get("/forecast.json", {
         params: {

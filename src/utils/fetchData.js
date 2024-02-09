@@ -1,8 +1,8 @@
 import axios from "axios";
-import env from "react-dotenv";
+import conf from "../conf/conf";
 
-const apiKey = env.API_KEY;
-const baseURL = env.BASE_URL;
+const apiKey = conf.apiKey;
+const baseURL = conf.baseURL;
 
 // we need to pass the baseURL as an object
 const URL = axios.create({
