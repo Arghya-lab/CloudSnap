@@ -1,19 +1,27 @@
 import React from "react";
 import { Box, Divider, Stack, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
 import ForecastWidget from "./ForecastWidget";
-import { time, date } from "../utils/dateTimeFormatter";
+import { date, time } from "../utils/dateTimeFormatter";
 import { useMediaQuery } from "@mui/material";
+import { useWeather } from "../context/WeatherContext";
+import { usePreference } from "../context/PreferenceContext";
+import { unitType } from "../types/preference";
 
 function Forecast() {
   const isTabletScreen = useMediaQuery("(max-width:768px)");
 
-  const unitType = useSelector((state) => state.info.unitType);
-  const { epochTime, timeZone } = useSelector(
-    (state) => state.weather.localTime
-  );
-  const hourlyForecasts = useSelector((state) => state.weather.hourlyForecast);
-  const dailyForecasts = useSelector((state) => state.weather.dailyForecast);
+  const { weather } = useWeather();
+  const { unit } = usePreference();
+
+  if (!weather) {
+    return null;
+  }
+
+  const {
+    localTime: { epochTime, timeZone },
+    hourlyForecasts,
+    dailyForecasts,
+  } = weather;
 
   return (
     <Stack spacing="2rem" marginY="1rem">
@@ -61,7 +69,7 @@ function Forecast() {
                   conditionText={dailyForecast.day.condition.text}
                   conditionIcon={dailyForecast.day.condition.icon}
                   temperature={
-                    unitType === "metric"
+                    unit === unitType.Metric
                       ? dailyForecast.day.avgtemp_c
                       : dailyForecast.day.avgtemp_f
                   }

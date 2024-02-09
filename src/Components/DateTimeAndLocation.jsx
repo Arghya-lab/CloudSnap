@@ -1,13 +1,19 @@
 import React from "react";
 import { Stack, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
 import { dateAndTime } from "../utils/dateTimeFormatter";
+import { useWeather } from "../context/WeatherContext";
 
 function DateTimeAndLocation() {
-  const { name, country } = useSelector((state) => state.weather.location);
-  const { epochTime, timeZone } = useSelector(
-    (state) => state.weather.localTime
-  );
+  const { weather } = useWeather();
+
+  if (!weather) {
+    return null;
+  }
+
+  const {
+    location: { name, country },
+    localTime: { epochTime, timeZone },
+  } = weather;
 
   const time = dateAndTime(epochTime, timeZone);
 

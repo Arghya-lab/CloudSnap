@@ -16,17 +16,16 @@ import Forecast from "./Components/Forecast";
 import DateTimeLocAndTempMobDevicesOnly from "./Components/DateTimeLocAndTempMobDevicesOnly";
 import Footer from "./Components/Footer";
 import EventAlert from "./Components/EventAlert";
-import { useSelector } from "react-redux";
 import { useFetchCityWeather } from "./hooks/useFetchCityWeather";
+import { useWeather } from "./context/WeatherContext";
+import { usePreference } from "./context/PreferenceContext";
 
 function App() {
   const isTabletScreen = useMediaQuery("(max-width:768px)");
 
-  const isWeatherPresent = useSelector(
-    (state) => state.weather.isWeatherPresent
-  );
-  const savedCity = useSelector((state) => state.info.savedCity);
-  const mode = useSelector((state) => state.info.mode);
+  
+  const { weather } = useWeather();
+  const { savedCity, mode } = usePreference();
   
   const fetchWeather = useFetchCityWeather();
   const theme = useMemo(() => createTheme(themeSetting(mode)), [mode]);
@@ -45,7 +44,7 @@ function App() {
           <CssBaseline />
           <HeaderButtons />
           <InputAndUtils />
-          {isWeatherPresent && (
+          {!!weather && (
             <>
               {isTabletScreen ? (
                 <DateTimeLocAndTempMobDevicesOnly />

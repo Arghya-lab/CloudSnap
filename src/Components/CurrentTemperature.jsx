@@ -13,13 +13,23 @@ import {
   KeyboardArrowUpOutlined,
   KeyboardArrowDownOutlined,
 } from "@mui/icons-material";
-import { useSelector } from "react-redux";
+import { usePreference } from "../context/PreferenceContext";
+import { useWeather } from "../context/WeatherContext";
+import { unitType } from "../types/preference";
 
 function CurrentTemperature() {
   const isMobileScreen = useMediaQuery("(max-width:390px)");
   const isTabletScreen = useMediaQuery("(max-width:768px)");
 
-  const unitType = useSelector((state) => state.info.unitType);
+  const { unit } = usePreference();
+  const { weather } = useWeather();
+
+  if (!weather) {
+    return null;
+  }
+
+  const { currentWeather, dailyForecasts } = weather;
+
   const {
     condition: { text, icon },
     temp_c,
@@ -35,12 +45,12 @@ function CurrentTemperature() {
     uv,
     vis_km,
     vis_miles,
-  } = useSelector((state) => state.weather.currentWeather);
+  } = currentWeather;
 
   const {
     day: { maxtemp_c, maxtemp_f, mintemp_c, mintemp_f },
     astro: { sunrise, sunset },
-  } = useSelector((state) => state.weather.dailyForecast[0]);
+  } = dailyForecasts[0];
 
   return (
     <Stack
@@ -69,7 +79,7 @@ function CurrentTemperature() {
               src={icon}
             />
             <Typography variant="h2">
-              {unitType === "metric" ? temp_c : temp_f}°
+              {unit === unitType.Metric ? temp_c : temp_f}°
             </Typography>
           </Stack>
           <Stack
@@ -79,7 +89,8 @@ function CurrentTemperature() {
             paddingX="1.5rem">
             <DeviceThermostatOutlined />
             <Typography variant="body1">
-              Feels Like : {unitType === "metric" ? feelslike_c : feelslike_f}°
+              Feels Like :{" "}
+              {unit === unitType.Metric ? feelslike_c : feelslike_f}°
             </Typography>
           </Stack>
         </Stack>
@@ -97,8 +108,8 @@ function CurrentTemperature() {
           <Stack direction="row" spacing="0.2rem">
             <AirOutlined />
             <Typography variant="body1">
-              Wind speed : {unitType === "metric" ? wind_kph : wind_mph}
-              {unitType === "metric" ? "kph" : "mph"}
+              Wind speed : {unit === unitType.Metric ? wind_kph : wind_mph}
+              {unit === unitType.Metric ? "kph" : "mph"}
             </Typography>
           </Stack>
         </Stack>
@@ -109,8 +120,8 @@ function CurrentTemperature() {
           <Stack direction="row" spacing="0.2rem">
             <WaterOutlined />
             <Typography variant="body1">
-              Precipitation : {unitType === "metric" ? precip_mm : precip_in}
-              {unitType === "metric" ? "mm" : "in"}
+              Precipitation : {unit === unitType.Metric ? precip_mm : precip_in}
+              {unit === unitType.Metric ? "mm" : "in"}
             </Typography>
           </Stack>
           <Stack direction="row" spacing="0.2rem">
@@ -120,8 +131,8 @@ function CurrentTemperature() {
           <Stack direction="row" spacing="0.2rem">
             <VisibilityOutlined />
             <Typography variant="body1">
-              Visibility : {unitType === "metric" ? vis_km : vis_miles}
-              {unitType === "metric" ? "km" : "mile"}
+              Visibility :{" "}
+              {unit === unitType.Metric ? `${vis_km}km` : `${vis_miles}mile`}
             </Typography>
           </Stack>
         </Stack>
@@ -159,13 +170,13 @@ function CurrentTemperature() {
           <Stack direction="row" spacing="0.2rem">
             <KeyboardArrowUpOutlined />
             <Typography variant="body1">
-              Max temp : {unitType === "metric" ? maxtemp_c : maxtemp_f}°
+              Max temp : {unit === unitType.Metric ? maxtemp_c : maxtemp_f}°
             </Typography>
           </Stack>
           <Stack direction="row" spacing="0.2rem">
             <KeyboardArrowDownOutlined />
             <Typography variant="body1">
-              Min temp : {unitType === "metric" ? mintemp_c : mintemp_f}°
+              Min temp : {unit === unitType.Metric ? mintemp_c : mintemp_f}°
             </Typography>
           </Stack>
         </Stack>

@@ -1,20 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { PreferenceProvider } from "./context/PreferenceContext";
+import { AlertProvider } from "./context/AlertContext";
+import { WeatherProvider } from "./context/WeatherContext";
 import App from "./App";
-import store from "./app/store";
-import { Provider } from "react-redux";
-import { persistStore } from "redux-persist";
-import { PersistGate } from "redux-persist/integration/react";
 
-const persistor = persistStore(store);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <App />
-      </PersistGate>
-    </Provider>
-  </React.StrictMode>,
+    <PreferenceProvider>
+      <AlertProvider>
+        <WeatherProvider>
+          <App />
+        </WeatherProvider>
+      </AlertProvider>
+    </PreferenceProvider>
+  </React.StrictMode>
 )
 

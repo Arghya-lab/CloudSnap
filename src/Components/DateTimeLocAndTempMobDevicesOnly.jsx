@@ -1,22 +1,30 @@
 import React from "react";
 import { Stack, Typography, Box } from "@mui/material";
 import { DeviceThermostatOutlined } from "@mui/icons-material";
-import { useSelector } from "react-redux";
+import { usePreference } from "../context/PreferenceContext";
+import { useWeather } from "../context/WeatherContext";
 import { dateAndTime } from "../utils/dateTimeFormatter";
+import { unitType } from "../types/preference";
 
 function DateTimeLocAndTempMobDevicesOnly() {
-  const unitType = useSelector((state) => state.info.unitType);
+  const { weather } = useWeather();
+  const { unit } = usePreference();
+
+  if (!weather) {
+    return null;
+  }
+
   const {
-    condition: { text, icon },
-    temp_c,
-    temp_f,
-    feelslike_c,
-    feelslike_f,
-  } = useSelector((state) => state.weather.currentWeather);
-  const { name, country } = useSelector((state) => state.weather.location);
-  const { epochTime, timeZone } = useSelector(
-    (state) => state.weather.localTime
-  );
+    currentWeather: {
+      condition: { text, icon },
+      temp_c,
+      temp_f,
+      feelslike_c,
+      feelslike_f,
+    },
+    location: { name, country },
+    localTime: { epochTime, timeZone },
+  } = weather;
 
   const time = dateAndTime(epochTime, timeZone);
 
@@ -54,13 +62,13 @@ function DateTimeLocAndTempMobDevicesOnly() {
             src={icon}
           />
           <Typography variant="h2">
-            {unitType === "metric" ? temp_c : temp_f}°
+            {unit === unitType.Metric ? temp_c : temp_f}°
           </Typography>
         </Stack>
         <Stack direction="row" spacing="0.2rem" justifyContent="flex-end">
           <DeviceThermostatOutlined />
           <Typography variant="body1">
-            Feels Like : {unitType === "metric" ? feelslike_c : feelslike_f}°
+            Feels Like : {unit === unitType.Metric ? feelslike_c : feelslike_f}°
           </Typography>
         </Stack>
       </Stack>
