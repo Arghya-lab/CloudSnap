@@ -1,8 +1,10 @@
-export const themeSetting = (mode) => {
+import { modeType } from "./types/preference";
+
+export const themeSetting = (mode: modeType) => {
   return {
     palette: {
       mode,
-      ...(mode === 'light'
+      ...(mode === modeType.Light
         ? {
             // palette values for light mode
             palette: {
