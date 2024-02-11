@@ -1,17 +1,25 @@
-import React from "react";
-import { Snackbar, Alert } from "@mui/material";
+import { Snackbar, Alert, SnackbarCloseReason } from "@mui/material";
 import { useAlert } from "../context/AlertContext";
+import { SyntheticEvent } from "react";
 
 function EventAlert() {
   const { alert, closeAlert } = useAlert();
 
-  const handleClose = (event, reason) => {
+  const handleClose = (
+    _: SyntheticEvent | Event,
+    reason: SnackbarCloseReason
+  ) => {
     if (reason === "clickaway") {
       return;
     }
     closeAlert();
   };
-  if (!alert.message) {
+
+  const adaptAlertOnClose = (event: SyntheticEvent) => {
+    handleClose(event, "timeout");
+  };
+
+  if (!alert.message || !alert.severity) {
     return null;
   } else {
     return (
@@ -22,7 +30,7 @@ function EventAlert() {
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
         <Alert
           icon={false}
-          onClose={handleClose}
+          onClose={adaptAlertOnClose}
           severity={alert.severity}
           variant="filled"
           sx={{ width: "100%" }}>

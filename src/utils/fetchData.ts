@@ -10,7 +10,7 @@ const URL = axios.create({
   timeout: 5000,
 });
 
-export const getCityNameSuggestion = async (q) => {
+export const getCityNameSuggestion = async (q: string) => {
   try {
     const res = await URL.get("/search.json", {
       params: {
@@ -24,7 +24,7 @@ export const getCityNameSuggestion = async (q) => {
   }
 };
 
-export const getWeatherDataByGeoLocation = async (lat, lon) => {
+export const getWeatherDataByGeoLocation = async (lat: number, lon: number) => {
   try {
     const res = await URL.get("/forecast.json", {
       params: {

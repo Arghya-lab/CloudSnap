@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import ForecastWidget from "./ForecastWidget";
 import { date, time } from "../utils/dateTimeFormatter";
@@ -24,14 +23,25 @@ function Forecast() {
   } = weather;
 
   return (
-    <Stack spacing="2rem" marginY="1rem">
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        marginY: "1rem",
+        gap: "2rem",
+      }}>
       <Box>
         <Box textAlign="left" my="0.8rem">
           <Typography variant="h6">Hourly forecast</Typography>
           <Divider />
         </Box>
         <Stack>
-          <Stack direction="row" spacing="2rem" justifyContent="space-around">
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-around",
+              gap: "2rem",
+            }}>
             {hourlyForecasts
               .filter((hourlyForecast) => hourlyForecast.time_epoch > epochTime)
               .map(
@@ -43,14 +53,14 @@ function Forecast() {
                       conditionText={hourlyForecast.condition.text}
                       conditionIcon={hourlyForecast.condition.icon}
                       temperature={
-                        unitType === "metric"
+                        unit === unitType.Metric
                           ? hourlyForecast.temp_c
                           : hourlyForecast.temp_f
                       }
                     />
                   )
               )}
-          </Stack>
+          </Box>
         </Stack>
       </Box>
 
@@ -59,7 +69,12 @@ function Forecast() {
           <Typography variant="h6">Daily forecast</Typography>
           <Divider />
         </Box>
-        <Stack direction="row" spacing="2rem" justifyContent="space-around">
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-around",
+            gap: "2rem",
+          }}>
           {dailyForecasts.map(
             (dailyForecast, index) =>
               index < (isTabletScreen ? 5 : 12) && (
@@ -76,9 +91,9 @@ function Forecast() {
                 />
               )
           )}
-        </Stack>
+        </Box>
       </Box>
-    </Stack>
+    </Box>
   );
 }
 

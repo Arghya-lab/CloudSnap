@@ -8,7 +8,7 @@ const useFetchCityWeather = () => {
   const { setWeatherAndLocalTime } = useWeather();
   const { initiateAlert } = useAlert();
 
-  const fetchWeather = async (city) => {
+  const fetchWeather = async (city: string) => {
     // we need to pass the baseURL as an object
     const URL = axios.create({
       baseURL: conf.baseURL,
@@ -32,7 +32,9 @@ const useFetchCityWeather = () => {
         `Weather of ${fetchedCity} fetched.`
       );
     } catch (error) {
-      initiateAlert(alertSeverity.Error, error.message);
+      if (axios.isAxiosError(error)) {
+        initiateAlert(alertSeverity.Error, error.message);
+      }
     }
   };
   return fetchWeather;

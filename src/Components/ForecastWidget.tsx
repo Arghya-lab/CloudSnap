@@ -1,14 +1,25 @@
-import React from "react";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+
+interface forecastWidgetPropInterface {
+  timeOrDate: string;
+  conditionText: string;
+  conditionIcon: string;
+  temperature: number;
+}
 
 function ForecastWidget({
   timeOrDate,
   conditionText,
   conditionIcon,
   temperature,
-}) {
+}: forecastWidgetPropInterface) {
   return (
-    <Stack alignItems="center">
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}>
       <Typography variant="body2">{timeOrDate}</Typography>
       <Box
         component="img"
@@ -20,7 +31,7 @@ function ForecastWidget({
         src={conditionIcon}
       />
       <Typography variant="body2">{temperature}°</Typography>
-    </Stack>
+    </Box>
   );
 }
 

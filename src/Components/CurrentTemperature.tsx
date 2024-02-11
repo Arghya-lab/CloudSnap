@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Stack, Typography, Divider, useMediaQuery } from "@mui/material";
 import {
   DeviceThermostatOutlined,
@@ -57,19 +56,32 @@ function CurrentTemperature() {
       spacing={isMobileScreen ? "0.2rem" : isTabletScreen ? "1.2rem" : "1rem"}>
       <Typography
         variant="overline"
-        display={isTabletScreen ? "none" : "block"}
         sx={{
+          display: isTabletScreen ? "none" : "block",
           textTransform: "uppercase",
           fontSize: "1.16rem",
           letterSpacing: "0.16rem",
         }}>
         {text}
       </Typography>
-      <Stack
-        direction={isMobileScreen ? "column" : "row"}
-        justifyContent={isMobileScreen ? "center" : "space-between"}>
-        <Stack display={isTabletScreen ? "none" : "block"}>
-          <Stack direction="row" alignItems="flex-end">
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: isMobileScreen ? 'column' : 'row',
+          justifyContent: isMobileScreen ? 'center' : 'space-between',
+        }}
+      >
+        <Box
+          sx={{
+            display: isTabletScreen ? 'none' : 'block',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'flex-end',
+            }}
+          >
             <Box
               component="img"
               sx={{
@@ -81,22 +93,30 @@ function CurrentTemperature() {
             <Typography variant="h2">
               {unit === unitType.Metric ? temp_c : temp_f}°
             </Typography>
-          </Stack>
-          <Stack
-            direction="row"
-            spacing="0.2rem"
-            justifyContent="end"
-            paddingX="1.5rem">
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              gap: '0.2rem',
+              justifyContent: 'flex-end',
+              paddingX: '1.5rem',
+            }}
+          >
             <DeviceThermostatOutlined />
             <Typography variant="body1">
               Feels Like :{" "}
               {unit === unitType.Metric ? feelslike_c : feelslike_f}°
             </Typography>
-          </Stack>
-        </Stack>
-        <Stack
-          spacing="0.25rem"
-          alignItems={isMobileScreen ? "center" : undefined}>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: "column",
+            gap: "0.25rem",
+            alignItems: isMobileScreen ? "center" : undefined
+          }}
+        >
           <Stack direction="row" spacing="0.2rem">
             <CloudOutlined />
             <Typography variant="body1">Cloud cover : {cloud}%</Typography>
@@ -112,9 +132,9 @@ function CurrentTemperature() {
               {unit === unitType.Metric ? "kph" : "mph"}
             </Typography>
           </Stack>
-        </Stack>
+        </Box>
 
-        <Stack
+        <Box
           spacing="0.25rem"
           alignItems={isMobileScreen ? "center" : undefined}>
           <Stack direction="row" spacing="0.2rem">
@@ -128,23 +148,29 @@ function CurrentTemperature() {
             <FlareOutlined />
             <Typography variant="body1">UV : {uv}</Typography>
           </Stack>
-          <Stack direction="row" spacing="0.2rem">
+          <Box direction="row" spacing="0.2rem">
             <VisibilityOutlined />
             <Typography variant="body1">
               Visibility :{" "}
               {unit === unitType.Metric ? `${vis_km}km` : `${vis_miles}mile`}
             </Typography>
-          </Stack>
-        </Stack>
-      </Stack>
+          </Box>
+        </Box>
+      </Box>
 
-      <Stack
-        direction={isTabletScreen ? "column" : "row"}
-        spacing={
-          isTabletScreen ? (isMobileScreen ? "0.2rem" : "0.4rem") : "1rem"
-        }
-        justifyContent={isTabletScreen ? undefined : "center"}
-        alignItems={isTabletScreen ? "center" : undefined}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: isTabletScreen ? 'column' : 'row',
+          gap: isTabletScreen
+            ? isMobileScreen
+              ? '0.2rem'
+              : '0.4rem'
+            : '1rem',
+          justifyContent: isTabletScreen ? undefined : 'center',
+          alignItems: isTabletScreen ? 'center' : undefined,
+        }}
+      >
         <Stack
           direction={isMobileScreen ? "column" : "row"}
           spacing={isMobileScreen ? "0.2rem" : "1rem"}>
@@ -180,7 +206,7 @@ function CurrentTemperature() {
             </Typography>
           </Stack>
         </Stack>
-      </Stack>
+      </Box>
     </Stack>
   );
 }

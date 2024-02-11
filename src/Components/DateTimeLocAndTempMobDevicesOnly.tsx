@@ -1,5 +1,4 @@
-import React from "react";
-import { Stack, Typography, Box } from "@mui/material";
+import { Typography, Box } from "@mui/material";
 import { DeviceThermostatOutlined } from "@mui/icons-material";
 import { usePreference } from "../context/PreferenceContext";
 import { useWeather } from "../context/WeatherContext";
@@ -29,12 +28,18 @@ function DateTimeLocAndTempMobDevicesOnly() {
   const time = dateAndTime(epochTime, timeZone);
 
   return (
-    <Stack
-      textAlign="left"
-      marginY="0.4rem"
-      direction="row"
-      justifyContent="space-between">
-      <Stack justifyContent="space-between">
+    <Box
+      sx={{
+        textAlign: 'left',
+        marginY: '0.4rem',
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'column', justifyContent: 'space-between'
+      }}>
         <Box>
           <Typography variant="h5">
             {name}
@@ -46,13 +51,18 @@ function DateTimeLocAndTempMobDevicesOnly() {
         </Box>
         <Typography
           variant="overline"
-          sx={{ fontSize: "0.9rem", letterSpacing: "0.16rem" }}
-          mt="0.6rem">
+          sx={{ fontSize: "0.9rem", letterSpacing: "0.16rem", mt: "0.6rem" }}
+        >
           {text}
         </Typography>
-      </Stack>
-      <Stack>
-        <Stack direction="row" alignItems="flex-end">
+      </Box>
+      <Box>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'flex-end',
+          }}
+        >
           <Box
             component="img"
             sx={{
@@ -64,15 +74,21 @@ function DateTimeLocAndTempMobDevicesOnly() {
           <Typography variant="h2">
             {unit === unitType.Metric ? temp_c : temp_f}°
           </Typography>
-        </Stack>
-        <Stack direction="row" spacing="0.2rem" justifyContent="flex-end">
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: '0.2rem',
+            justifyContent: 'flex-end',
+          }}
+        >
           <DeviceThermostatOutlined />
           <Typography variant="body1">
             Feels Like : {unit === unitType.Metric ? feelslike_c : feelslike_f}°
           </Typography>
-        </Stack>
-      </Stack>
-    </Stack>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 

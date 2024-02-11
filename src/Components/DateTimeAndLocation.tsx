@@ -1,4 +1,3 @@
-import React from "react";
 import { Stack, Typography } from "@mui/material";
 import { dateAndTime } from "../utils/dateTimeFormatter";
 import { useWeather } from "../context/WeatherContext";

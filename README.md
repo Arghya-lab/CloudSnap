@@ -21,16 +21,15 @@ You can check out a live demo of the app [here](#your-demo-url).
 ## Roadmap
 - [x]  Add alert system.
 - [x]  Add a light, dark theme.
-- [ ]  Remove bug, UI improvemrnt.
+- [ ]  Remove bug, UI improvement.
 - [ ]  Add Bookmark City as a favorite for quick access to the city at the top.
 - [ ]  Add date-wise detailed forecast.
+- [x]  Convert to typescript.
 
 ## Tech Stack
 
 - ReactJS - Frontend framework
 - Material-UI  - UI library
-- Redux toolkit useDispatch & useSelector hooks - For state management
-
 
 ## Contributing
 
