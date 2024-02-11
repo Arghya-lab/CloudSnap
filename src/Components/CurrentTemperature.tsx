@@ -1,4 +1,11 @@
-import { Box, Stack, Typography, Divider, useMediaQuery } from "@mui/material";
+import {
+  Box,
+  Stack,
+  Typography,
+  Divider,
+  useMediaQuery,
+  Skeleton,
+} from "@mui/material";
 import {
   DeviceThermostatOutlined,
   CloudOutlined,
@@ -21,10 +28,11 @@ function CurrentTemperature() {
   const isTabletScreen = useMediaQuery("(max-width:768px)");
 
   const { unit } = usePreference();
-  const { weather } = useWeather();
+  const { weather, isWeatherFetching } = useWeather();
 
-  if (!weather) {
-    return null;
+  if (!weather) return null;
+  if (isWeatherFetching) {
+    return <Skeleton sx={{ marginY: "0.25rem" }} variant="rounded" animation="wave" height={192} />;
   }
 
   const { currentWeather, dailyForecasts } = weather;
@@ -66,22 +74,19 @@ function CurrentTemperature() {
       </Typography>
       <Box
         sx={{
-          display: 'flex',
-          flexDirection: isMobileScreen ? 'column' : 'row',
-          justifyContent: isMobileScreen ? 'center' : 'space-between',
-        }}
-      >
+          display: "flex",
+          flexDirection: isMobileScreen ? "column" : "row",
+          justifyContent: isMobileScreen ? "center" : "space-between",
+        }}>
         <Box
           sx={{
-            display: isTabletScreen ? 'none' : 'block',
-          }}
-        >
+            display: isTabletScreen ? "none" : "block",
+          }}>
           <Box
             sx={{
-              display: 'flex',
-              alignItems: 'flex-end',
-            }}
-          >
+              display: "flex",
+              alignItems: "flex-end",
+            }}>
             <Box
               component="img"
               sx={{
@@ -96,12 +101,11 @@ function CurrentTemperature() {
           </Box>
           <Box
             sx={{
-              display: 'flex',
-              gap: '0.2rem',
-              justifyContent: 'flex-end',
-              paddingX: '1.5rem',
-            }}
-          >
+              display: "flex",
+              gap: "0.2rem",
+              justifyContent: "flex-end",
+              paddingX: "1.5rem",
+            }}>
             <DeviceThermostatOutlined />
             <Typography variant="body1">
               Feels Like :{" "}
@@ -111,12 +115,11 @@ function CurrentTemperature() {
         </Box>
         <Box
           sx={{
-            display: 'flex',
+            display: "flex",
             flexDirection: "column",
             gap: "0.25rem",
-            alignItems: isMobileScreen ? "center" : undefined
-          }}
-        >
+            alignItems: isMobileScreen ? "center" : undefined,
+          }}>
           <Stack direction="row" spacing="0.2rem">
             <CloudOutlined />
             <Typography variant="body1">Cloud cover : {cloud}%</Typography>
@@ -148,29 +151,23 @@ function CurrentTemperature() {
             <FlareOutlined />
             <Typography variant="body1">UV : {uv}</Typography>
           </Stack>
-          <Box direction="row" spacing="0.2rem">
+          <Stack direction="row" spacing="0.2rem">
             <VisibilityOutlined />
             <Typography variant="body1">
-              Visibility :{" "}
-              {unit === unitType.Metric ? `${vis_km}km` : `${vis_miles}mile`}
+              Visibility : {unit === unitType.Metric ? `${vis_km}km` : `${vis_miles}mile`}
             </Typography>
-          </Box>
+          </Stack>
         </Box>
       </Box>
 
       <Box
         sx={{
-          display: 'flex',
-          flexDirection: isTabletScreen ? 'column' : 'row',
-          gap: isTabletScreen
-            ? isMobileScreen
-              ? '0.2rem'
-              : '0.4rem'
-            : '1rem',
-          justifyContent: isTabletScreen ? undefined : 'center',
-          alignItems: isTabletScreen ? 'center' : undefined,
-        }}
-      >
+          display: "flex",
+          flexDirection: isTabletScreen ? "column" : "row",
+          gap: isTabletScreen ? (isMobileScreen ? "0.2rem" : "0.4rem") : "1rem",
+          justifyContent: isTabletScreen ? undefined : "center",
+          alignItems: isTabletScreen ? "center" : undefined,
+        }}>
         <Stack
           direction={isMobileScreen ? "column" : "row"}
           spacing={isMobileScreen ? "0.2rem" : "1rem"}>

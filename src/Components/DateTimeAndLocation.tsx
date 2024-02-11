@@ -1,12 +1,13 @@
-import { Stack, Typography } from "@mui/material";
+import { Skeleton, Stack, Typography } from "@mui/material";
 import { dateAndTime } from "../utils/dateTimeFormatter";
 import { useWeather } from "../context/WeatherContext";
 
 function DateTimeAndLocation() {
-  const { weather } = useWeather();
+  const { weather, isWeatherFetching } = useWeather();
 
-  if (!weather) {
-    return null;
+  if (!weather) return null;
+  if (isWeatherFetching) {
+    return <Skeleton sx={{marginY: "0.25rem"}} variant="rounded" animation="wave" height={128} />;
   }
 
   const {

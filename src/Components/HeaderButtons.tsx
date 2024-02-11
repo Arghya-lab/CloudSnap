@@ -1,5 +1,5 @@
 import { ButtonGroup, Button, Box, useMediaQuery } from "@mui/material";
-import { useFetchCityWeather } from "../hooks/useFetchCityWeather";
+import { useWeather } from "../context/WeatherContext";
 
 function HeaderButtons() {
   const cities = [
@@ -22,8 +22,7 @@ function HeaderButtons() {
   ];
 
   const isMobileScreen = useMediaQuery("(max-width:425px)");
-
-  const fetchWeather = useFetchCityWeather();
+  const { fetchWeather } = useWeather()
 
   return (
     <Box marginY="0.8rem">

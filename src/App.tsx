@@ -16,22 +16,29 @@ import Forecast from "./Components/Forecast";
 import DateTimeLocAndTempMobDevicesOnly from "./Components/DateTimeLocAndTempMobDevicesOnly";
 import Footer from "./Components/Footer";
 import EventAlert from "./Components/EventAlert";
-import { useFetchCityWeather } from "./hooks/useFetchCityWeather";
 import { useWeather } from "./context/WeatherContext";
 import { usePreference } from "./context/PreferenceContext";
 
 function App() {
   const isTabletScreen = useMediaQuery("(max-width:768px)");
 
-  
-  const { weather } = useWeather();
-  const { savedCity, mode } = usePreference();
-  
-  const fetchWeather = useFetchCityWeather();
+  const { weather, fetchWeatherByGeoLocation } = useWeather();
+  const { mode } = usePreference();
   const theme = useMemo(() => createTheme(themeSetting(mode)), [mode]);
 
   useEffect(() => {
-    fetchWeather(savedCity)
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          fetchWeatherByGeoLocation(position.coords.latitude, position.coords.longitude)
+        },
+        (error) => {
+          console.error('Error getting geolocation:', error);
+        }
+      );
+    } else {
+      console.error('Geolocation is not supported by this browser.');
+    }
   }, []);
 
   return (

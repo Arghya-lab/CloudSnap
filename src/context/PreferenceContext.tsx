@@ -3,10 +3,8 @@ import { PreferenceContextInterface, modeType, unitType } from "../types/prefere
 
 const PreferenceContext = createContext<PreferenceContextInterface>({
   unit: unitType.Metric,
-  savedCity: "London",
   mode: modeType.Light,
   toggleUnitType: () => { },
-  setCity: () => { },
   toggleMode: () => { },
 })
 
@@ -14,21 +12,18 @@ const usePreference = () => useContext(PreferenceContext)
 
 const PreferenceProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [unit, setUnit] = useState(unitType.Metric)
-  const [savedCity, setSavedCity] = useState("Bengaluru")
   const [mode, setMode] = useState(modeType.Light)
 
   const toggleUnitType = () => {
     setUnit(prev => prev === unitType.Metric ? unitType.Imperial : unitType.Metric)
   }
-  const setCity = (city: string) => {
-    setSavedCity(city)
-  }
+
   const toggleMode = () => {
     setMode(prev => prev === modeType.Light ? modeType.Dark : modeType.Light)
   }
 
   return (
-    <PreferenceContext.Provider value={{ unit, savedCity, mode, toggleUnitType, setCity, toggleMode }}>
+    <PreferenceContext.Provider value={{ unit, mode, toggleUnitType, toggleMode }}>
       {children}
     </PreferenceContext.Provider>
   )

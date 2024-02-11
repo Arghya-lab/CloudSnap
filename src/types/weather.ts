@@ -1,6 +1,8 @@
 export interface WeatherContextInterface {
   weather: WeatherType;
-  setWeatherAndLocalTime: (data: WeatherApiResInterface) => void;
+  isWeatherFetching: boolean;
+  fetchWeather: (data: string) => void;
+  fetchWeatherByGeoLocation: (lat: number, lon: number) => void;
 }
 
 export type WeatherType = null | {

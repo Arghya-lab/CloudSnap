@@ -1,4 +1,4 @@
-import { Box, Divider, Stack, Typography } from "@mui/material";
+import { Box, Divider, Skeleton, Stack, Typography } from "@mui/material";
 import ForecastWidget from "./ForecastWidget";
 import { date, time } from "../utils/dateTimeFormatter";
 import { useMediaQuery } from "@mui/material";
@@ -9,11 +9,12 @@ import { unitType } from "../types/preference";
 function Forecast() {
   const isTabletScreen = useMediaQuery("(max-width:768px)");
 
-  const { weather } = useWeather();
+  const { weather, isWeatherFetching } = useWeather();
   const { unit } = usePreference();
 
-  if (!weather) {
-    return null;
+  if (!weather) return null;
+  if (isWeatherFetching) {
+    return <Skeleton sx={{marginY: "0.25rem"}} variant="rounded" animation="wave" height={352} />;
   }
 
   const {

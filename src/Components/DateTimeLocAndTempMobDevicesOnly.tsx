@@ -1,4 +1,4 @@
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Skeleton } from "@mui/material";
 import { DeviceThermostatOutlined } from "@mui/icons-material";
 import { usePreference } from "../context/PreferenceContext";
 import { useWeather } from "../context/WeatherContext";
@@ -6,11 +6,12 @@ import { dateAndTime } from "../utils/dateTimeFormatter";
 import { unitType } from "../types/preference";
 
 function DateTimeLocAndTempMobDevicesOnly() {
-  const { weather } = useWeather();
+  const { weather, isWeatherFetching } = useWeather();
   const { unit } = usePreference();
 
-  if (!weather) {
-    return null;
+  if (!weather) return null;
+  if (isWeatherFetching) {
+    return <Skeleton sx={{marginY: "0.25rem"}} variant="rounded" animation="wave" height={256} />;
   }
 
   const {

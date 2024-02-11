@@ -9,23 +9,25 @@ import {
 } from "@mui/material";
 import { SearchOutlined, LightMode, DarkMode } from "@mui/icons-material";
 import { useAlert } from "../context/AlertContext";
+import { useWeather } from "../context/WeatherContext";
 import { getCityNameSuggestion } from "../utils/fetchData";
-import { useFetchCityWeather } from "../hooks/useFetchCityWeather";
 import { alertSeverity } from "../types/alert";
 import { usePreference } from "../context/PreferenceContext";
 import { unitType } from "../types/preference";
 import { locationSuggestionInterface } from "../types/location";
 
+let timeoutId: NodeJS.Timeout;
+
 function InputAndUtils() {
   const { unit, mode, toggleUnitType, toggleMode } = usePreference();
   const { initiateAlert } = useAlert();
+  const { fetchWeather } = useWeather();
 
   const [city, setCity] = useState("");
-  const [citySuggestion, setCitySuggestion] = useState([]);
+  const [citySuggestion, setCitySuggestion] = useState<locationSuggestionInterface[]>([]);
   const [selectedCity, setSelectedCity] = useState<
     locationSuggestionInterface | ""
   >("");
-  const fetchWeather = useFetchCityWeather();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newCityValue = e.target.value;
@@ -33,39 +35,54 @@ function InputAndUtils() {
   };
 
   useEffect(() => {
+    // debounce function
+    const debounce = (func: () => void, delay: number) => {
+      clearTimeout(timeoutId);
+
+      timeoutId = setTimeout(() => {
+        func();
+      }, delay);
+    };
+
     //  fetching city name suggestion
-    (async () => {
+    const fetchCityNameSuggestion = async () => {
+      setCitySuggestion([]);
+
       if (city.length >= 3) {
         const cityNameSuggestion = await getCityNameSuggestion(city);
         setCitySuggestion(cityNameSuggestion);
       }
-    })();
+    };
+
+    debounce(fetchCityNameSuggestion, 750);
   }, [city]);
 
   const handleUnitChange = () => {
     toggleUnitType();
+    initiateAlert(alertSeverity.Info, `Unit type Changed to ${unit}.`);
   };
 
   const handleChangeMode = () => {
     toggleMode();
   };
 
-  useEffect(() => {
-    initiateAlert(alertSeverity.Info, `Mode changed to ${mode}.`);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode]);
-
-  useEffect(() => {
-    initiateAlert(alertSeverity.Info, `Unit type Changed to ${unit}.`);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [unit]);
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (selectedCity) {
       const cityToFetch: string = selectedCity.name ? selectedCity.name : city;
-      fetchWeather(cityToFetch).finally(() => setSelectedCity(""));
+      fetchWeather(cityToFetch);
+      setSelectedCity("");
+      setCity("")
+      setCitySuggestion([]);
     }
+  };
+
+  const handleOptionClick = (option: locationSuggestionInterface) => {
+    fetchWeather(option.name);
+    
+    setSelectedCity("");
+    setCity("")
+    setCitySuggestion([]);
   };
 
   return (
@@ -96,9 +113,12 @@ function InputAndUtils() {
           value={selectedCity}
           onChange={(
             _,
-            newValue: NonNullable<string | locationSuggestionInterface>
+            option: NonNullable<string | locationSuggestionInterface>
           ) => {
-            setSelectedCity(newValue as locationSuggestionInterface);
+            if (typeof option === "object") {
+              setSelectedCity(option as locationSuggestionInterface);
+              handleOptionClick(option);
+            }
           }}
           renderInput={(params) => (
             <TextField
