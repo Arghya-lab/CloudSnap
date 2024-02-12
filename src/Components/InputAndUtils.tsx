@@ -79,7 +79,7 @@ function InputAndUtils() {
 
   const handleOptionClick = (option: locationSuggestionInterface) => {
     fetchWeather(option.name);
-    
+
     setSelectedCity("");
     setCity("")
     setCitySuggestion([]);
@@ -131,7 +131,7 @@ function InputAndUtils() {
             />
           )}
         />
-        <Box onClick={handleSubmit} type="submit">
+        <Box onClick={handleSubmit}>
           <IconButton aria-label="search" color="primary">
             <SearchOutlined />
           </IconButton>

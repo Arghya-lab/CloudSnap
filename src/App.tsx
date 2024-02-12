@@ -39,7 +39,7 @@ function App() {
     } else {
       console.error('Geolocation is not supported by this browser.');
     }
-  }, []);
+  }, [fetchWeatherByGeoLocation]);
 
   return (
     <div className="app">

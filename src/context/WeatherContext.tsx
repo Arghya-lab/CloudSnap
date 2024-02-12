@@ -1,5 +1,5 @@
 import React, { ReactNode, createContext, useContext, useState } from "react";
-import { WeatherContextInterface, WeatherType } from "../types/weather";
+import { WeatherApiResInterface, WeatherContextInterface, WeatherType } from "../types/weather";
 import axios from "axios";
 import conf from "../conf/conf";
 import { alertSeverity } from "../types/alert";
@@ -20,6 +20,26 @@ const WeatherProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isWeatherFetching, setIsWeatherFetching] = useState(false);
   const [weather, setWeather] = useState<WeatherType>(null);
 
+  const setWeatherData = (data: WeatherApiResInterface) => {
+    const fetchedCity = data.location.name;
+
+    setWeather({
+      location: { name: data.location.name, country: data.location.country },
+      localTime: {
+        epochTime: data.location.localtime_epoch,
+        timeZone: data.location.tz_id,
+      },
+      currentWeather: data.current,
+      hourlyForecasts: data.forecast.forecastday[0].hour,
+      dailyForecasts: data.forecast.forecastday,
+    });
+
+    initiateAlert(
+      alertSeverity.Success,
+      `Weather of ${fetchedCity} fetched.`
+    );
+  }
+
   const fetchWeather = async (city: string) => {
     setIsWeatherFetching(true)
     try {
@@ -28,23 +48,7 @@ const WeatherProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       });
 
       const data = res.data;
-      const fetchedCity = data.location.name;
-
-      setWeather({
-        location: { name: data.location.name, country: data.location.country },
-        localTime: {
-          epochTime: data.location.localtime_epoch,
-          timeZone: data.location.tz_id,
-        },
-        currentWeather: data.current,
-        hourlyForecasts: data.forecast.forecastday[0].hour,
-        dailyForecasts: data.forecast.forecastday,
-      });
-
-      initiateAlert(
-        alertSeverity.Success,
-        `Weather of ${fetchedCity} fetched.`
-      );
+      setWeatherData(data)
     } catch (error) {
       if (axios.isAxiosError(error)) {
         initiateAlert(alertSeverity.Error, error.message);
@@ -54,19 +58,25 @@ const WeatherProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   const fetchWeatherByGeoLocation = async (lat: number, lon: number) => {
+    setIsWeatherFetching(true)
     try {
+      // current.json?key=YOUR_API_KEY&q=${latitude},${longitude}
       const res = await URL.get("/forecast.json", {
         params: {
           key: conf.apiKey,
-          lat,
-          lon,
-          days: 3,
+          q: `${lat},${lon}`,
+          days: 3
         },
       });
-      return { data: res.data };
+
+      const data = res.data;
+      setWeatherData(data);
     } catch (error) {
-      return { error: error };
+      if (axios.isAxiosError(error)) {
+        initiateAlert(alertSeverity.Error, error.message);
+      }
     }
+    setIsWeatherFetching(false)
   };
 
   return (
