@@ -5,7 +5,6 @@ import {
   TextField,
   Button,
   IconButton,
-  Box,
 } from "@mui/material";
 import { SearchOutlined, LightMode, DarkMode } from "@mui/icons-material";
 import { useAlert } from "../context/AlertContext";
@@ -72,7 +71,7 @@ function InputAndUtils() {
       const cityToFetch: string = selectedCity.name ? selectedCity.name : city;
       fetchWeather(cityToFetch);
       setSelectedCity("");
-      setCity("")
+      setCity("");
       setCitySuggestion([]);
     }
   };
@@ -81,20 +80,19 @@ function InputAndUtils() {
     fetchWeather(option.name);
 
     setSelectedCity("");
-    setCity("")
+    setCity("");
     setCitySuggestion([]);
   };
 
   return (
-    <Box
-      sx={{
+    <form
+      onSubmit={handleSubmit}
+      style={{
         display: "flex",
         justifyContent: "space-between",
-        marginY: "0.8rem",
+        margin: "0.75rem 0 2rem"
       }}>
       <Stack
-        component="form"
-        onSubmit={handleSubmit}
         direction="row"
         spacing={1}
         sx={{ width: "85%" }}>
@@ -131,11 +129,9 @@ function InputAndUtils() {
             />
           )}
         />
-        <Box onClick={handleSubmit}>
-          <IconButton aria-label="search" color="primary">
-            <SearchOutlined />
-          </IconButton>
-        </Box>
+        <IconButton type="submit" aria-label="search" color="primary">
+          <SearchOutlined />
+        </IconButton>
       </Stack>
       <Stack direction={"row"}>
         <IconButton
@@ -148,7 +144,7 @@ function InputAndUtils() {
           {unit === unitType.Metric ? "F" : "M"}
         </Button>
       </Stack>
-    </Box>
+    </form>
   );
 }
 export default InputAndUtils;

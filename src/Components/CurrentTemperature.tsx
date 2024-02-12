@@ -138,10 +138,12 @@ function CurrentTemperature() {
         </Box>
 
         <Box
-          display="flex"
-          flexDirection="column"
-          spacing="0.25rem"
-          sx={isMobileScreen ? { alignItems: "center" } : null}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: isMobileScreen ? "center" : "flex-start",
+            gap: "0.25rem",
+          }}
         >
           <Stack direction="row" spacing="0.2rem">
             <WaterOutlined />

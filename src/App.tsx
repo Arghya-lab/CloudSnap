@@ -39,7 +39,8 @@ function App() {
     } else {
       console.error('Geolocation is not supported by this browser.');
     }
-  }, [fetchWeatherByGeoLocation]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="app">
